@@ -3,7 +3,6 @@
 #include <drm_fourcc.h>
 #include <pango/pangocairo.h>
 #include <wlr/render/wlr_renderer.h>
-#include <wlr/util/box.h>
 #include <wlr/util/log.h>
 #include "common/font.h"
 #include "labwc.h"

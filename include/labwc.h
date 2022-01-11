@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <wayland-server-core.h>
 #include <wlr/backend.h>
-#include <wlr/render/allocator.h>
 #include <wlr/render/wlr_renderer.h>
 #include <wlr/types/wlr_compositor.h>
 #include <wlr/types/wlr_cursor.h>
@@ -112,8 +111,7 @@ struct seat {
 
 struct server {
 	struct wl_display *wl_display;
-	struct wlr_renderer *renderer;
-	struct wlr_allocator *allocator;
+	struct wlr_renderer *renderer;	
 	struct wlr_backend *backend;
 
 	struct wlr_xdg_shell *xdg_shell;

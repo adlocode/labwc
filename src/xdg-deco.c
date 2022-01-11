@@ -23,18 +23,15 @@ static void
 xdg_deco_request_mode(struct wl_listener *listener, void *data)
 {
 	struct xdg_deco *xdg_deco = wl_container_of(listener, xdg_deco, request_mode);
-	enum wlr_xdg_toplevel_decoration_v1_mode client_mode =
-		xdg_deco->wlr_decoration->requested_mode;
-
-	if (client_mode == WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_NONE) {
-		client_mode = rc.xdg_shell_server_side_deco
-			? WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE
-			: WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_CLIENT_SIDE;
+	enum wlr_xdg_toplevel_decoration_v1_mode mode;
+	if (rc.xdg_shell_server_side_deco) {
+		mode = WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE;
+	} else {
+		mode = WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_CLIENT_SIDE;
 	}
-
-	wlr_xdg_toplevel_decoration_v1_set_mode(xdg_deco->wlr_decoration, client_mode);
+	wlr_xdg_toplevel_decoration_v1_set_mode(xdg_deco->wlr_decoration, mode);
 	view_set_decorations(xdg_deco->view,
-		client_mode == WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE);
+		mode == WLR_XDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE);
 }
 
 void

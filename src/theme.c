@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <wlr/util/box.h>
 #include <wlr/util/log.h>
 #include <strings.h>
 #include "common/dir.h"

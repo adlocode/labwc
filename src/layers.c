@@ -242,7 +242,7 @@ output_destroy_notify(struct wl_listener *listener, void *data)
 		wl_container_of(listener, layer, output_destroy);
 	layer->layer_surface->output = NULL;
 	wl_list_remove(&layer->output_destroy.link);
-	wlr_layer_surface_v1_destroy(layer->layer_surface);
+	wlr_layer_surface_v1_close(layer->layer_surface);
 }
 
 static void
@@ -257,13 +257,10 @@ surface_commit_notify(struct wl_listener *listener, void *data)
 		return;
 	}
 
-	if (layer_surface->current.committed
-			|| layer->mapped != layer_surface->mapped) {
-		layer->mapped = layer_surface->mapped;
 		struct output *output =
 			output_from_wlr_output(layer->server, wlr_output);
 		arrange_layers(output);
-	}
+	
 	damage_all_outputs(layer->server);
 }
 
@@ -585,14 +582,14 @@ new_layer_surface_notify(struct wl_listener *listener, void *data)
 		return;
 	}
 
-	wl_list_insert(&output->layers[layer_surface->pending.layer],
+	wl_list_insert(&output->layers[layer_surface->client_pending.layer],
 		&surface->link);
 	/*
 	 * Temporarily set the layer's current state to pending so that
 	 * it can easily be arranged.
 	 */
 	struct wlr_layer_surface_v1_state old_state = layer_surface->current;
-	layer_surface->current = layer_surface->pending;
+	layer_surface->current = layer_surface->client_pending;
 	arrange_layers(output);
 	layer_surface->current = old_state;
 }
